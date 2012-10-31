@@ -1,19 +1,17 @@
-                               #RC framework
+#RC framework
 
-[What is it][:q]
-[Main goals][:w]
-[Structure][:e]
-[Similar frameworks][:r]
-[Install][:t]
-[License][:y]
+What is it
+Main goals
+Structure
+Similar frameworks
+Install
+License
 
-[q]:
 ##What is it
 RC is a WEB development framework, which uses MVC pattern
 RC is random two letters
 It uses PHP 5.3
 
-[w]:
 ##Main goals
   * Config files
     - All config files are in PHP array format
@@ -34,39 +32,36 @@ It uses PHP 5.3
     - Cache class
     - User class with ACL support
 
-[e]:
 ##Structure
 RC is a classic MVC framework with some differences
 
 Directory structure:
 [backend] - the application name
  ...
-[frontend]
-  [config] - config files
-    [routes.php] - routing config file
-  [controllers]
-  [templates]
-  [run.php] - main script (initialize setting, run front controller)
-[rc] - base framework classes
-  [config] - config files
-    [regional] - regional config files
-    [autoload.php] - autoload directories
-    [config.php] - main config
-    [db.php] - database config file
-    [path.php] - main rc directories
-    [regional.php] - this config loads config files from [regional] directory
-    [tables.php] - table names
-  [core] - main classes
-  [lib] - additional directory with classes
-  [models]
-[index.php] - run framework from this file
+ * [frontend]
+  * [config] - config files
+    * [routes.php] - routing config file
+  * [controllers]
+  * [templates]
+  * [run.php] - main script (initialize setting, run front controller)
+* [rc] - base framework classes
+  * [config] - config files
+    * [regional] - regional config files
+    * [autoload.php] - autoload directories
+    * [config.php] - main config
+    * [db.php] - database config file
+    * [path.php] - main rc directories
+    * [regional.php] - this config loads config files from [regional] directory
+    * [tables.php] - table names
+  * [core] - main classes
+  * [lib] - additional directory with classes
+  * [models]
+* [index.php] - run framework from this file
 
-[r]:
 ##Similar frameworks
  - Code Igniter
  - Fuel
 
-[t]:
 ##Install
   - install [todos.sql]
   - configure [config/db.php] ($db['dev'])
@@ -76,12 +71,11 @@ The framework comes with a todos sample application
 This is a multiuser task planning application using AJAX with REST interface
 
 Components:
-  *jQuery - http://jquery.com/
-  *Backbone - http://backbonejs.org/
-  *Bootstrap - http://twitter.github.com/bootstrap/
-  *bootstrap-datepicker - http://www.eyecon.ro/bootstrap-datepicker/
-  *handlebars - http://handlebarsjs.com/
+  * jQuery - http://jquery.com/
+  * Backbone - http://backbonejs.org/
+  * Bootstrap - http://twitter.github.com/bootstrap/
+  * bootstrap-datepicker - http://www.eyecon.ro/bootstrap-datepicker/
+  * handlebars - http://handlebarsjs.com/
 
-[y]:
 ##License  
 Fuck the bureaucracy, I AM AN ANARCHIST !
