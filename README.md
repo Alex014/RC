@@ -59,8 +59,9 @@ Directory structure:
 * [index.php] - run framework from this file
 
 ##Similar frameworks
- - Code Igniter
- - Fuel
+ - Code Igniter http://codeigniter.com/
+ - Fuel http://fuelphp.com/
+ - Laravel http://laravel.com/
 
 ##Install
   - install [todos.sql]
