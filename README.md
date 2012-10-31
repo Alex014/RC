@@ -1,15 +1,10 @@
 #RC framework
 
-What is it
-Main goals
-Structure
-Similar frameworks
-Install
-License
-
 ##What is it
 RC is a WEB development framework, which uses MVC pattern
+
 RC is random two letters
+
 It uses PHP 5.3
 
 ##Main goals
@@ -36,8 +31,9 @@ It uses PHP 5.3
 RC is a classic MVC framework with some differences
 
 Directory structure:
-[backend] - the application name
- ...
+
+* [backend] - the application name
+  - ...
 * [frontend]
   - [config] - config files
       + [routes.php] - routing config file
@@ -69,6 +65,7 @@ Directory structure:
     Thats it!
 
 The framework comes with a todos sample application
+
 This is a multiuser task planning application using AJAX with REST interface
 
 Components:
