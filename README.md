@@ -40,19 +40,19 @@ Directory structure:
  ...
 * [frontend]
   - [config] - config files
-    + [routes.php] - routing config file
+      + [routes.php] - routing config file
   - [controllers]
   - [templates]
   - [run.php] - main script (initialize setting, run front controller)
 * [rc] - base framework classes
   - [config] - config files
-    + [regional] - regional config files
-    + [autoload.php] - autoload directories
-    + [config.php] - main config
-    + [db.php] - database config file
-    + [path.php] - main rc directories
-    + [regional.php] - this config loads config files from [regional] directory
-    + [tables.php] - table names
+      + [regional] - regional config files
+      + [autoload.php] - autoload directories
+      + [config.php] - main config
+      + [db.php] - database config file
+      + [path.php] - main rc directories
+      + [regional.php] - this config loads config files from [regional] directory
+      + [tables.php] - table names
   - [core] - main classes
   - [lib] - additional directory with classes
   - [models]
