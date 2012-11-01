@@ -33,6 +33,8 @@ class events {
    * @return type true or false (if no events executed)
    */
   public static function trigger($event_name, $params) {
+    if(!is_array($params)) $params = array($params);
+      
     if(count(self::$events[$event_name]) == 0)
       return false;
     
