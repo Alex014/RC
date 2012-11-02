@@ -57,7 +57,7 @@ Directory structure:
 ##Examples
 
 ###CACHE
-*Initialization and config
+* Initialization and config
     CACHE::init('frontend');
     CACHE::$enabled = true;
 
@@ -82,11 +82,11 @@ Directory structure:
 	  '24h' => 3600*24
 	)
     );
-*In templates
-    <? if(CACHE::start('cache for 24 hours, '24h')): ?>
-	  HTML <?php  echo 'php';  ?>
-    <? endif; CACHE::end(); ?>
-*In models and controllers
+* In templates
+      <? if(CACHE::start('cache for 24 hours, '24h')): ?>
+      HTML <?php  echo 'php';  ?>
+      <? endif; CACHE::end(); ?>
+* In models and controllers
     $fff = function () use ($id, $place_id) {
 	$e = new events();
 	$p = new places();
