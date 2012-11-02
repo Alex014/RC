@@ -71,15 +71,15 @@ Directory structure:
 	),
 
     'classes' => array(
-	'1min' => 60,
-	'5min' => 300,
-	'10min' => 600,
-	'30min' => 1800,
-	'1h' => 3600,
-	'2h' => 7200,
-	'6h' => 3600*6,
-	'12h' => 3600*12,
-	'24h' => 3600*24
+	  '1min' => 60,
+	  '5min' => 300,
+	  '10min' => 600,
+	  '30min' => 1800,
+	  '1h' => 3600,
+	  '2h' => 7200,
+	  '6h' => 3600*6,
+	  '12h' => 3600*12,
+	  '24h' => 3600*24
 	)
     );
 *In templates
@@ -107,12 +107,12 @@ Directory structure:
     USER::init(new userAdapterDB(new users()));
     //...
     if($user_id = USER::register($data)) {
-	USER::force_login($user_id);
-	redirect::go ('/'.USER::get_field('email'));
+      USER::force_login($user_id);
+      redirect::go ('/'.USER::get_field('email'));
     }
 
     if(USER::login($_POST['email'], $_POST['pass']))
-	redirect::go ('/'.USER::get_field('email'));
+      redirect::go ('/'.USER::get_field('email'));
 
     $user_id = USER::get_pk();
 
@@ -123,8 +123,8 @@ Directory structure:
     }
 
     public function register($data) {
-	$this->user_model->insert($data);
-	return $this->user_model->get_last_id();
+      $this->user_model->insert($data);
+      return $this->user_model->get_last_id();
     } 
 ###REST
     $routes['todo/<:num>']['?GET'] = 'todos.get_item';
@@ -141,7 +141,7 @@ Directory structure:
 ##Install
   - install [todos.sql]
   - configure [config/db.php] ($db['dev'])
-    Thats it!
+  - Run
 
 The framework comes with a todos sample application
 
