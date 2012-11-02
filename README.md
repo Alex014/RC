@@ -83,54 +83,54 @@ Directory structure:
 	)
     );
 * In templates
-      <? if(CACHE::start('cache for 24 hours, '24h')): ?>
-      HTML <?php  echo 'php';  ?>
-      <? endif; CACHE::end(); ?>
+  <? if(CACHE::start('cache for 24 hours, '24h')): ?>
+    HTML <?php  echo 'php';  ?>
+  <? endif; CACHE::end(); ?>
 * In models and controllers
-    $fff = function () use ($id, $place_id) {
-	$e = new events();
-	$p = new places();
-	$event_item = $e->get($id, url::$lang);
-	$event_item['place'] = $p->get($place_id, url::$lang);
-	return $event_item;
-    };
+  $fff = function () use ($id, $place_id) {
+    $e = new events();
+    $p = new places();
+    $event_item = $e->get($id, url::$lang);
+    $event_item['place'] = $p->get($place_id, url::$lang);
+    return $event_item;
+  };
 
     $event_item = CACHE::process("EVENTS-show $place_id $id", '30min', $fff);
-    Event manager
-    events::on('event', 
-	function($param) {
-	  echo "The event has been triggered with param '$param'";
-	});
-    //...
-    events::trigger('event', 'xxx');
+###Event manager
+  events::on('event', 
+    function($param) {
+      echo "The event has been triggered with param '$param'";
+    });
+  //...
+  events::trigger('event', 'xxx');
 ###USER class
-    USER::init(new userAdapterDB(new users()));
-    //...
-    if($user_id = USER::register($data)) {
+  USER::init(new userAdapterDB(new users()));
+  //...
+  if($user_id = USER::register($data)) {
       USER::force_login($user_id);
       redirect::go ('/'.USER::get_field('email'));
-    }
+  }
 
-    if(USER::login($_POST['email'], $_POST['pass']))
+  if(USER::login($_POST['email'], $_POST['pass']))
       redirect::go ('/'.USER::get_field('email'));
 
-    $user_id = USER::get_pk();
+  $user_id = USER::get_pk();
 
-    /*   rc/lib/USER/adapters/DB.php   */
+  /*   rc/lib/USER/adapters/DB.php   */
 
-    public function login($email, $password) {
+  public function login($email, $password) {
       //...
-    }
+  }
 
-    public function register($data) {
+  public function register($data) {
       $this->user_model->insert($data);
       return $this->user_model->get_last_id();
-    } 
+  } 
 ###REST
-    $routes['todo/<:num>']['?GET'] = 'todos.get_item';
-    $routes['todo/<:num>']['?PUT'] = 'todos.edit';
-    $routes['todo']['?POST'] = 'todos.add';
-    $routes['todo/<:num>']['?DELETE'] = 'todos.del';
+  $routes['todo/<:num>']['?GET'] = 'todos.get_item';
+  $routes['todo/<:num>']['?PUT'] = 'todos.edit';
+  $routes['todo']['?POST'] = 'todos.add';
+  $routes['todo/<:num>']['?DELETE'] = 'todos.del';
 
 
 ##Similar frameworks
