@@ -8,22 +8,6 @@
 class FILEMANAGER extends plugged {
   public static $upload_dir;
   
-  private static function call_static($method, $arguments) {
-    return parent::call_static_params(__CLASS__, $method, $arguments);
-  }
-  
-  private static function __callStatic($name, $arguments) {
-    return self::call_static($name, $arguments);
-  }
-  
-  public static function load_plugin($class) {
-    return parent::load_plugin(dirname(__FILE__).'/plugins', __CLASS__, $class);
-  }
-  
-  public static function f_empty($name) {
-    return (!isset($_FILES[$name]) || ($_FILES[$name]['name'] == ''));
-  }
-  
   /**
    * Content-type of a file
    *
@@ -125,21 +109,7 @@ class FILEMANAGER extends plugged {
   public static function remove($filename) {
     unlink(rtrim(self::$upload_dir, '/').'/'.$filename);
   }
-  
-  /**
-   * 
-   *
-   * @param type $name
-   * @param type $filename Where to save a file FILEMANAGER::$upload_dir/$filename
-   *  with extension
-   * @param type $height - Result image height
-   * @param type $width - Result image width
-   * @param type $q - quality (Jpeg, PNG)
-   * @return type false if error occured
-   */
-  public static function upload_image($name, $filename, $height, $width, $q = 70) {
-    return self::call_static('upload_image', array($name, $filename, $height, $width, $q));
-  }
+
 
 }
 

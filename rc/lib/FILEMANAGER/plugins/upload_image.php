@@ -13,10 +13,9 @@ return
    * @return type false if error occured
    */
   function ($name, $filename, $height, $width, $q = 70) {
+    if($_FILES[$name]['tmp_name'] === false) return false;
     $img_file = $_FILES[$name]['tmp_name'];
     $ext = filemanager::f_ext($name);
-    if($img_file === false)
-      return false;
     
     switch ($ext) {
       case 'jpg': $src_img = imagecreatefromjpeg($img_file);  break;
@@ -25,12 +24,16 @@ return
       case 'gif':$src_img = imagecreatefromgif($img_file);   break;
       default : return false; break;
     }
-        
+  
     $w = ImageSX($src_img);
     $h = ImageSY($src_img);
     $wh = $w/$h;
 
-    if($width == '') {
+    if(($width == '') && ($height == '')) {
+      $width = $w;
+      $height = $h;
+    }
+    elseif($width == '') {
       $width = round($height*$wh);
     }
     elseif($height == '') {
@@ -46,11 +49,15 @@ return
     if(file_exists($out_file)) unlink ($out_file);
     
     switch ($ext) {
-      case 'jpg': $img = imagejpeg($dst_img, $out_file, $q);  break;
-      case 'jpeg': $img = imagejpeg($dst_img, $out_file, $q);  break;
-      case 'png': $img = imagepng($dst_img, $out_file);  break;
-      case 'gif': $img = imagegif($dst_img, $out_file);   break;
+      case 'jpg': imagejpeg($dst_img, $out_file, $q);  break;
+      case 'jpeg': imagejpeg($dst_img, $out_file, $q);  break;
+      case 'png': imagepng($dst_img, $out_file);  break;
+      case 'gif': imagegif($dst_img, $out_file);   break;
     }
+    
+    imagedestroy ( $dst_img );
+    imagedestroy ( $src_img );
+    
     chmod($out_file, 0666);
     return $out_file;
   };

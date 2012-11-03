@@ -98,6 +98,7 @@ class CACHE {
   /**
    * Check if cache with this name exists
    * @param type $name - The name of the cache file 
+   * @param type $time - time in seconds
    * @return bool 
    */
   public static function cache_exists_time($name, $time) {
@@ -132,11 +133,12 @@ class CACHE {
   /**
    * Make cache (if nesasery)
    * @param string $name - The name of the cache file - The name of the cache file
+   * @param type $class
    * @param function $l_function - The function that returns data (the function gets called only if nesasery)
    * @return mixed Data or cache contents 
    */
-  public static function process($name, $l_function) {
-    if(CACHE::$enabled && CACHE::cache_exists($name)) {
+  public static function process($name, $class, $l_function) {
+    if(CACHE::$enabled && CACHE::cache_exists_time($name, get_config('cache.classes.'.$class) )) {
       return CACHE::cache_load($name);
     }
     else {
