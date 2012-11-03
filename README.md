@@ -58,7 +58,7 @@ Directory structure:
 
 ###CACHE
 * Initialization and config
-    CACHE::init('frontend');
+    `CACHE::init('frontend');
     CACHE::$enabled = true;
 
     /* rc/config/cache.php */
@@ -81,13 +81,13 @@ Directory structure:
 	  '12h' => 3600*12,
 	  '24h' => 3600*24
 	)
-    );
+    );`
 * In templates
-  <? if(CACHE::start('cache for 24 hours, '24h')): ?>
+  `<? if(CACHE::start('cache for 24 hours, '24h')): ?>
     HTML <?php  echo 'php';  ?>
-  <? endif; CACHE::end(); ?>
+  <? endif; CACHE::end(); ?>`
 * In models and controllers
-  $fff = function () use ($id, $place_id) {
+  `$fff = function () use ($id, $place_id) {
     $e = new events();
     $p = new places();
     $event_item = $e->get($id, url::$lang);
@@ -95,16 +95,16 @@ Directory structure:
     return $event_item;
   };
 
-    $event_item = CACHE::process("EVENTS-show $place_id $id", '30min', $fff);
+  $event_item = CACHE::process("EVENTS-show $place_id $id", '30min', $fff);`
 ###Event manager
-  events::on('event', 
+  `events::on('event', 
     function($param) {
       echo "The event has been triggered with param '$param'";
     });
   //...
-  events::trigger('event', 'xxx');
+  events::trigger('event', 'xxx');`
 ###USER class
-  USER::init(new userAdapterDB(new users()));
+  `USER::init(new userAdapterDB(new users()));
   //...
   if($user_id = USER::register($data)) {
       USER::force_login($user_id);
@@ -125,12 +125,12 @@ Directory structure:
   public function register($data) {
       $this->user_model->insert($data);
       return $this->user_model->get_last_id();
-  } 
+  }`
 ###REST
-  $routes['todo/<:num>']['?GET'] = 'todos.get_item';
+  `$routes['todo/<:num>']['?GET'] = 'todos.get_item';
   $routes['todo/<:num>']['?PUT'] = 'todos.edit';
   $routes['todo']['?POST'] = 'todos.add';
-  $routes['todo/<:num>']['?DELETE'] = 'todos.del';
+  $routes['todo/<:num>']['?DELETE'] = 'todos.del';`
 
 
 ##Similar frameworks
