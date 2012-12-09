@@ -1,11 +1,11 @@
 <?php
 
-class todos extends base_model {
+class tasks extends base_model {
   public $pk = 'id';
-  public $table = 'todos';
+  public $table = 'tasks';
   
   /**
-   * Return all todos
+   * Return all tasks
    * @param type $user_id
    * @param type $date
    * @param type $completed - show only completed
@@ -83,17 +83,23 @@ class todos extends base_model {
    * Priority ++
    * @param type $user_id
    * @param type $id
+   * @param type $uncompleted move up in uncompleted set of tasks
    * @return bool true or false (if task does not belong to user) 
    */
-  public function up($user_id, $id) {
+  public function up($user_id, $id, $uncompleted = false) {
     if(!$this->is_yours($user_id, $id))
             return FALSE;
+    //Completed condition
+    if($uncompleted)
+      $uncompleted = 'completed = 0';
+    else
+      $uncompleted = '1';
     //This record id and order
     $row = $this->select_pk_r('*', $id);
     $this_id = $row['id'];
     $this_order = $row['order'];
     //Max smaller record and order
-    if($row = $this->select_c_r('*', "`order` < $this_order", "`order` DESC", '1')) {
+    if($row = $this->select_c_r('*', "`order` < $this_order AND $uncompleted", "`order` DESC", '1')) {
       //Change
       $upper_id = $row['id'];
       $upper_order = $row['order'];
@@ -110,17 +116,23 @@ class todos extends base_model {
    * Priority --
    * @param type $user_id
    * @param type $id
+   * @param type $uncompleted move down in uncompleted set of tasks
    * @return bool true or false (if task does not belong to user) 
    */
-  public function down($user_id, $id) {
+  public function down($user_id, $id, $uncompleted = false) {
     if(!$this->is_yours($user_id, $id))
             return FALSE;
+    //Completed condition
+    if($uncompleted)
+      $uncompleted = 'completed = 0';
+    else
+      $uncompleted = '1';
     //This record id and order
     $row = $this->select_pk_r('*', $id);
     $this_id = $row['id'];
     $this_order = $row['order'];
     //Max smaller record and order
-    if($row = $this->select_c_r('*', "`order` > $this_order", "`order` ASC", '1')) {
+    if($row = $this->select_c_r('*', "`order` > $this_order AND $uncompleted", "`order` ASC", '1')) {
       //Change
       $lower_id = $row['id'];
       $lower_order = $row['order'];

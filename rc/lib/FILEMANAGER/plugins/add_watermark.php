@@ -1,55 +1,74 @@
 <?php
 return
+
   /**
+   * Place a watermark onto image
    * 
-   *
-   * @param type $name
-   * @param type $filename Where to save a file FILEMANAGER::$upload_dir/$filename
-   *  with extension
-   * @param type $height - Result image height
-   * @param type $width - Result image width
-   * @param type $q - quality (Jpeg, PNG)
-   * @return type false if error occured
+   * @param type $filename - Filename
+   * @param type $wfilename - Watermark filename
+   * @param type $corner [lt - left top, rt - rigth top, rb - right bottom, lb - left bottom]
+   * @param type $margin - margin of watermark
    */
-  function ($name, $filename, $height, $width, $q = 70) {
-    $img_file = $_FILES[$name]['tmp_name'];
-    $ext = filemanager::f_ext($name);
-    if($img_file === false)
-      return false;
-    
+  function ($filename, $wfilename, $corner = 'rt', $margin = 0, $q = 70) {
+    $filename = rtrim(FILEMANAGER::$upload_dir, '/').'/'.$filename;
+    $ext = filemanager::filename_ext($filename);
+    $wfilename = rtrim(FILEMANAGER::$upload_dir, '/').'/'.$wfilename;
+    $wext = filemanager::filename_ext($wfilename);
+
     switch ($ext) {
-      case 'jpg': $src_img = imagecreatefromjpeg($img_file);  break;
-      case 'jpeg': $src_img = imagecreatefromjpeg($img_file);  break;
-      case 'png': $src_img = imagecreatefrompng($img_file);  break;
-      case 'gif':$src_img = imagecreatefromgif($img_file);   break;
+      case 'jpg': $image = imagecreatefromjpeg($filename);  break;
+      case 'jpeg': $image = imagecreatefromjpeg($filename);  break;
+      case 'png': $image = imagecreatefrompng($filename);  break;
+      case 'gif':$image = imagecreatefromgif($filename);   break;
       default : return false; break;
     }
-        
-    $w = ImageSX($src_img);
-    $h = ImageSY($src_img);
-    $wh = $w/$h;
-
-    if($width == '') {
-      $width = round($height*$wh);
-    }
-    elseif($height == '') {
-      $height = round($width/$wh);
-    }
-
-    $dst_img = ImageCreateTrueColor($width, $height); 
-    //print "$dst_img, $src_img, 0, 0, 0, 0, $width, $height, $w, $h";
-    $res = ImageCopyResampled($dst_img, $src_img, 0, 0, 0, 0, $width, $height, $w, $h); 
-    //var_dump($res);
-        //die();
-    $out_file = rtrim(FILEMANAGER::$upload_dir, '/').'/'.$filename;
-    if(file_exists($out_file)) unlink ($out_file);
     
-    switch ($ext) {
-      case 'jpg': $img = imagejpeg($dst_img, $out_file, $q);  break;
-      case 'jpeg': $img = imagejpeg($dst_img, $out_file, $q);  break;
-      case 'png': $img = imagepng($dst_img, $out_file);  break;
-      case 'gif': $img = imagegif($dst_img, $out_file);   break;
+    switch ($wext) {
+      case 'jpg': $wimage = imagecreatefromjpeg($wfilename);  break;
+      case 'jpeg': $wimage = imagecreatefromjpeg($wfilename);  break;
+      case 'png': $wimage = imagecreatefrompng($wfilename);  break;
+      case 'gif':$wimage = imagecreatefromgif($wfilename);   break;
+      default : return false; break;
     }
-    chmod($out_file, 0666);
-    return $out_file;
+      
+    $w = imagesx($image);
+    $h = imagesy($image);
+    $_w = imagesx($wimage);
+    $_h = imagesy($wimage);
+    
+    switch ($corner) {
+      case 'lt':
+        $xpos = $margin;
+        $ypos = $margin;
+      break;
+      case 'rt':
+        $xpos = $w - $_w - $margin;
+        $ypos = $margin;
+      break;
+      case 'rb':
+        $xpos = $w - $_w - $margin;
+        $ypos = $h - $_h - $margin;
+      break;
+      case 'lb':
+        $xpos = $margin;
+        $ypos = $h - $_h - $margin;
+      break;
+      default:
+        $xpos = $margin;
+        $ypos = $margin;
+      break;
+    }
+    
+    $res = imagecopy($image, $wimage, $xpos, $ypos, 0, 0, $_w, $_h);
+    // Output and free memory
+    switch ($ext) {
+      case 'jpg': imagejpeg($image, $filename, $q);  break;
+      case 'jpeg': imagejpeg($image, $filename, $q);  break;
+      case 'png': imagepng($image, $filename, floor($q/10));  break;
+      case 'gif':imagegif($image, $filename);   break;
+      default : return false; break;
+    }
+    //var_dump($image);
+    imagedestroy($image);
+    imagedestroy($wimage);
   };

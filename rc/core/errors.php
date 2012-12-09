@@ -56,7 +56,6 @@ function err2exc($errno, $errstr, $errfile, $errline) {
 
 set_error_handler('err2exc', E_ALL & E_NOTICE & E_USER_NOTICE & E_STRICT);
 
-
 /**
  * Custom exception
  */
@@ -128,3 +127,9 @@ class routingException extends rc_Exception {
         parent::__construct($code, $message, $file, $line);
     }
 }
+
+function exception_handler($exception) {
+  echo "<center>".$exception->getMessage()."</center>";
+}
+
+set_exception_handler('exception_handler');

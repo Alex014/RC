@@ -38,7 +38,7 @@
  * 
  */
 
-$routes['@default'] = 'main.index';
+$routes['@default'] = 'main.tasks';
 $routes['@error'] = 'main.error';
 $routes['@denied'] = 'main.login';
 
@@ -46,13 +46,14 @@ $routes['register'] = 'main.register';
 $routes['logout'] = 'main.logout';
 
 $routes['usercheck'] = 'main.exists';
-$routes['todos']['?POST'] = 'todos.get';
-$routes['todo/<:num>']['?GET'] = 'todos.get_item';
-$routes['todo/<:num>']['?PUT'] = 'todos.edit';
-$routes['todo']['?POST'] = 'todos.add';
-$routes['todo/<:num>']['?DELETE'] = 'todos.del';
-$routes['todo/up/<:num>'] = 'todos.up';
-$routes['todo/down/<:num>'] = 'todos.down';
-$routes['todo/done/<:num>'] = 'todos.done';
-$routes['todo/undone/<:num>'] = 'todos.undone';
-$routes['<:text>'] = 'main.index';
+$routes['gettasks']['?POST'] = 'tasks.get';
+$routes['task/<:num>']['?GET'] = 'tasks.get_item';
+$routes['task/<:num>']['?PUT'] = 'tasks.edit';
+$routes['task']['?POST'] = 'tasks.add';
+$routes['task/<:num>']['?DELETE'] = 'tasks.del';
+$routes['task/up/<:num>/<:num>'] = 'tasks.up';
+$routes['task/down/<:num>/<:num>'] = 'tasks.down';
+$routes['task/done/<:num>'] = 'tasks.done';
+$routes['task/undone/<:num>'] = 'tasks.undone';
+$routes['tasks'] = 'main.tasks';
+$routes['contacts'] = 'main.contacts';

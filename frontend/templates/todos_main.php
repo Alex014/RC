@@ -19,10 +19,13 @@
 
       <div class="navbar">
         <div class="navbar-inner">
-          <a class="brand" href="/">TODOS</a>
+          <a class="brand" href="/"><?=USER::get_field('email')?></a>
           <ul class="nav">
-            <li class="active">
-              <a href="/<?=USER::get_field('email')?>"><?=USER::get_field('email')?></a>
+            <li <?if($module == 'tasks'):?>class="active"<?endif;?>>
+              <a href="/tasks">Tasks</a>
+            </li>
+            <li <?if($module == 'contacts'):?>class="active"<?endif;?>>
+              <a href="/contacts">Contacts</a>
             </li>
             <li>
               <a href="/logout">Logout</a>

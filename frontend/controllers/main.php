@@ -13,16 +13,33 @@ class mainController extends base_controller {
    * @param type $params
    * @return type 
    */
-  function index($params) {
-    if(!USER::is_logged())
-      return $this->front->runController ('main.login', array());
+  function tasks($params) {
+    if($this->usercheck()) return true;
     
-    VIEW::template('todos', array(
-        'current_date' => unix_to_date(),
-        'dt_format' => get_config('regional/'.DEFAULT_LOCALE.'.date_format_js')), 'content');
+    VIEW::template('tasks', array(), 'content');
     VIEW::display('todos_main');
   }
   
+  function contacts($params) {
+    if($this->usercheck()) return true;
+    
+    VIEW::template('contacts', array(), 'content');
+    VIEW::display('todos_main');
+  }
+  
+  private function usercheck() {
+    if(!USER::is_logged()) {
+      $this->front->runController ('main.login', array());
+      return true;
+    }
+    else {
+      VIEW::set_template_vars(array(
+        'current_date' => unix_to_date(),
+        'dt_format' => get_config('regional/'.DEFAULT_LOCALE.'.date_format_js')));
+    }
+  }
+
+
   /**
    * Show "404" page
    * @param type $params 

@@ -7,41 +7,33 @@ $(document).ready(function() {
   $('#regform').bt_validate();
 
   //Custom check function
-  $.bt_validate.fn.custom_pass_eq = function() {
+  /*$.bt_validate.fn.custom_pass_eq = function(value) {
     return ($('#pass').val() == $('#pass2').val());
   }
   //Err message on tooltip (if check function returns false)
-  $.bt_validate.text.custom_pass_eq = "The passwords are not equal";
+  $.bt_validate.text.custom_pass_eq = "The passwords are not equal";*/
+    
+  $.bt_validate.method(
+    'custom_pass_eq', 
+    function(value) {
+      return ($('#pass').val() == $('#pass2').val());
+    },
+    "The passwords are not equal"
+  );  
 
   //Ajax check function
-  $.bt_validate.fn.usercheck = function(value) {
-    //Checking if value has changed
-    if((window['usercheck_prev_value'] != undefined) && (usercheck_prev_value == value))
-      return '';
-    usercheck_prev_value = value;
-    //Blocking form and showing progress
-    $.bt_validate.block()
-    this.show_tooltip('checking', 'blue');
-
-    var self = this;
-    //Timeout
-    setTimeout(function() {
-        //Ajax call
-        $.post('/usercheck', {'email': value}, function(res) {
-          if(res == '1') {
-            //User with same email is found
-            self.show_err_tooltip('This email is olready used');
-          }
-          else {
-            //If no user found, showing "green" tooltip and unblocking the form
-            self.show_ok_tooltip('OK');
-            $.bt_validate.unblock()
-          }
-        });      
-    },250);
-    //Return empty string, if you want to skip standart checking
-    return '';
-  }
+    $.bt_validate.method(
+      'usercheck', 
+      $.bt_validate.ajax_check({
+        url: '/usercheck', 
+        type: 'POST',
+        return_type: 'text',
+        get_data: function() { return {'email': $('#email').val()} }, 
+        get_success: function(res) { return (res == '1'); },
+        msg_ok: 'This email is free', 
+        msg_checking: 'Checking ...', 
+        msg_fail: 'This email is olready used'})
+    );
 });
 </script>
 

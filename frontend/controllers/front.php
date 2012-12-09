@@ -1,6 +1,6 @@
 <?php
 /**
- * Description of front_controller
+ * Description of frontController
  *
  * @author user
  */
@@ -20,6 +20,16 @@ class frontController extends base_front_controller {
    * @param boolean $continue  - Continue executuion of the controller ?
    */
   public function onRunController($controller, $method, &$params, &$continue) {
+    if($controller == 'main') {
+      switch ($method) {
+        case 'tasks':
+          VIEW::set_template_vars(array('module' => 'tasks'));
+        break;
+        case 'contacts':
+          VIEW::set_template_vars(array('module' => 'contacts'));
+        break;
+      }
+    }
     //...
   }
 }

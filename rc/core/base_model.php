@@ -290,7 +290,12 @@ DDD;
     return $this->condition_condition($condition);
   }
   
-  protected function condition_condition($condition) {
+  /**
+   * Make string condition from array
+   * @param array $condition array(field => value, ....)
+   * @return string 
+   */
+  public function condition_condition($condition) {
     if(is_string($condition)) {
       $sql = " WHERE ".$condition;
       return $sql;      

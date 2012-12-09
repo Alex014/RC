@@ -1,5 +1,6 @@
 <?php
 $tables = array(
   'users' => 'users',
-  'todos' => 'todos'
+  'tasks' => 'tasks',
+  'contacts' => 'contacts'
 );

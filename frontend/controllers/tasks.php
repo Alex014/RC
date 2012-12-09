@@ -5,7 +5,7 @@
  *
  * @author user
  */
-class todosController extends base_controller {
+class tasksController extends base_controller {
   
   /**
    * Return task list
@@ -13,25 +13,25 @@ class todosController extends base_controller {
    * @return type 
    */
   public function get($params) {
-    $todos = new todos();
+    $tasks = new tasks();
     $user_id = USER::get_pk();
     
     $date = unix_to_date($_POST['date'], 'standart');
     $uncompleted = (bool)(int)$_POST['uncompleted'];
 
     if($uncompleted) {
-      $todos = $todos->get($user_id, $date, false);
+      $tasks = $tasks->get($user_id, $date, false);
     }
     else {
-      $todos = $todos->get($user_id, $date);
+      $tasks = $tasks->get($user_id, $date);
     }
     
-    $todos = array_map(function($item) {
+    $tasks = array_map(function($item) {
       $item['date'] = date_convert('standart', USER::get_field('lang'), $item['date']);
       return $item;
-    }, $todos);
+    }, $tasks);
     
-    print json_encode($todos);
+    print json_encode($tasks);
     die();
   }
   
@@ -40,10 +40,10 @@ class todosController extends base_controller {
    * @param type $params 
    */
   public function get_item($params) {
-    $todos = new todos();
+    $tasks = new tasks();
     $id = $params[0];
     $user_id = USER::get_pk();
-    print json_encode($todos->get_item($user_id, $id));
+    print json_encode($tasks->get_item($user_id, $id));
     die();
   }
   
@@ -52,13 +52,13 @@ class todosController extends base_controller {
    * @param type $params 
    */
   public function add($params) {
-    $todos = new todos();
+    $tasks = new tasks();
     $user_id = USER::get_pk();
     $input = input::instance();
     $name = $input->data['name'];
     $date = date_convert(USER::get_field('lang'), 'standart', $input->data['date']);
     //print "add($user_id, $name, $date)";
-    $todos->add($user_id, $name, $date);
+    $tasks->add($user_id, $name, $date);
     print '1';
     die();
   }
@@ -68,7 +68,7 @@ class todosController extends base_controller {
    * @param type $params 
    */
   public function edit($params) {
-    $todos = new todos();
+    $tasks = new tasks();
     $id = $params[0];
     $user_id = USER::get_pk();
     $input = input::instance();
@@ -76,9 +76,9 @@ class todosController extends base_controller {
     $date = date_convert(USER::get_field('lang'), 'standart', $input->data['date']);
     
     if(isset($input->data['name']))
-      $todos->edit($user_id, $id, $date, $input->data['name']);
+      $tasks->edit($user_id, $id, $date, $input->data['name']);
     else
-      $todos->edit($user_id, $id, $date);
+      $tasks->edit($user_id, $id, $date);
     
     print $id;
     die();
@@ -89,10 +89,10 @@ class todosController extends base_controller {
    * @param type $params 
    */
   public function del($params) {
-    $todos = new todos();
+    $tasks = new tasks();
     $id = $params[0];
     $user_id = USER::get_pk();
-    $todos->del($user_id, $id);
+    $tasks->del($user_id, $id);
     print '1';
     die();
   }
@@ -102,10 +102,11 @@ class todosController extends base_controller {
    * @param type $params 
    */
   public function up($params) {
-    $todos = new todos();
+    $tasks = new tasks();
     $id = $params[0];
+    $uncompleted = $params[1];
     $user_id = USER::get_pk();
-    $todos->up($user_id, $id);
+    $tasks->up($user_id, $id, (bool)$uncompleted);
     print '1';
     die();
   }
@@ -115,10 +116,11 @@ class todosController extends base_controller {
    * @param type $params 
    */
   public function down($params) {
-    $todos = new todos();
+    $tasks = new tasks();
     $id = $params[0];
+    $uncompleted = $params[1];
     $user_id = USER::get_pk();
-    $todos->down($user_id, $id);
+    $tasks->down($user_id, $id, (bool)$uncompleted);
     print '1';
     die();
   }
@@ -128,10 +130,10 @@ class todosController extends base_controller {
    * @param type $params 
    */
   public function done($params) {
-    $todos = new todos();
+    $tasks = new tasks();
     $id = $params[0];
     $user_id = USER::get_pk();
-    $todos->done($user_id, $id);
+    $tasks->done($user_id, $id);
     print '1';
     die();
   }
@@ -141,10 +143,10 @@ class todosController extends base_controller {
    * @param type $params 
    */
   public function undone($params) {
-    $todos = new todos();
+    $tasks = new tasks();
     $id = $params[0];
     $user_id = USER::get_pk();
-    $todos->undone($user_id, $id);
+    $tasks->undone($user_id, $id);
     print '1';
     die();
   }

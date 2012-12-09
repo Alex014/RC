@@ -3,8 +3,8 @@ Date.prototype.localtime = function() {
   return Math.round(this.getTime() / 1000) - this.getTimezoneOffset()*60;
 }
 
-var Todo = Backbone.Model.extend({
-  urlRoot : '/todo',
+var Contact = Backbone.Model.extend({
+  urlRoot : '/contact',
   add: function(data) {
     $.ajax({
       type: "POST",
@@ -22,43 +22,12 @@ var Todo = Backbone.Model.extend({
     }).done(function() {
       Todos.trigger('load');
     });
-  },
-  changeDate: function(date) {
-    $.ajax({
-      type: "PUT",
-      url: this.urlRoot+'/'+this.id,
-      data: {'date': date}
-    }).done(function() {
-      Todos.trigger('load');
-    });
-  },
-  complete: function() {
-    $.get('/todo/done/' + this.id, function(res) {
-      console.log(res);
-      Todos.trigger('load');
-    });
-  },
-  uncomplete: function() {
-    $.get('/todo/undone/' + this.id, function(res) {
-      console.log(res);
-      Todos.trigger('load');
-    });
-  },
-  up: function() {
-    $.get('/todo/up/' + this.id, function() {
-      Todos.trigger('load');
-    }, 'text');
-  },
-  down: function() {
-    $.get('/todo/down/' + this.id, function(res) {
-      Todos.trigger('load');
-    });
   }
 });
 
-var TodoList = Backbone.Collection.extend({
-  url: '/todos',
-  model: Todo,
+var ContactsList = Backbone.Collection.extend({
+  url: '/contacts',
+  model: Contact,
   
   load: function() {
     var self = this;
@@ -93,47 +62,22 @@ var TodoList = Backbone.Collection.extend({
       TodosView.trigger('show');
     }, 'json');
   },
-  additem: function(data) {
-    TNew = new Todo();
-    TNew.add(data);
-  },
-  edit: function(id, data) {
-    this.get(id).edit(data);
-  },
   del: function(id) {
     this.get(id).destroy({success: function(model, response) {
         TodosView.trigger('show');
     }});
-  },
-
-  changeDate: function(id, date) {
-    TNew = new Todo();
-    TNew.id = id;
-    TNew.changeDate(date);
-  },
-  up: function(id) {
-    this.get(id).up();
-  },
-  down: function(id) {
-    this.get(id).down();
-  },
-  complete: function(id) {
-    this.get(id).complete();
-  },
-  uncomplete: function(id) {
-    this.get(id).uncomplete();
   }
 });
 
-var Todos = new TodoList();
-Todos.on('load', Todos.load);
+var Contacts = new ContactsList();
+Contacts.on('load', Contacts.load);
 
-var ViewTodos = Backbone.View.extend({
+var ViewContacts = Backbone.View.extend({
   showUnCompleted: true,
   id: 0,
   
   initialize: function() {
-    ViewTodos.__super__.initialize.call(this);
+    ViewContacts.__super__.initialize.call(this);
     
     var self = this;
     
@@ -257,104 +201,62 @@ var ViewTodos = Backbone.View.extend({
   }
 });
 
-var TodosView = new ViewTodos();
-TodosView.on('show', TodosView.showTodos);
+var ContactsView = new ViewContacts();
+ContactsView.on('show', ContactsView.showTodos);
   
 $(document).ready(function() {
-  Todos.load(false);
+  Contacts.load(false);
 });
 </script>
 
 <style>
-  #todos {
-    width: 980px;
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
-  }
-  .row div {
-    height: 32px;
-    text-align: center;
-  }
-  
-  .text {
-    letter-spacing: 1px;
-  }
-  .date {
-    letter-spacing: 1px;
-    font-weight: bold;
-    cursor: pointer;
-  }
-  .date_input {
-    width: 125px;
-  }
-  .completed .text, .completed .date {
-    color: silver;
-  }
-  .overdue .text, .overdue .date {
-    color: red;
-  }
-  
-  #name {
-    width: 98%;
-    height: 100px;
-  }
-  
-  #okTask, #nokTask {
-    margin-right: 24px;
-  }
+
 </style>
 
-<script id="tmplDialog" type="text/x-handlebars-template">
-    <div class="modal-header">
-      <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-      <h3>{{header}}</h3>
-    </div>
-    <div class="modal-body">
-        <label for="date">Date</label>
-        <input name="date" class="date_input" id="date" type="text" value="{{date}}"/>
-        <label for="text">Text</label>
-        <textarea name="name" id="name">{{name}}</textarea>
-    </div>
-    <div class="modal-footer">
-      <a href="#" class="btn" id="close">Close</a>
-      <a href="#" class="btn btn-primary" id="save">Save changes</a>
-    </div>
-</script>
+<table id="MyGrid" class="table table-bordered datagrid">
+ <thead>
+ <tr>
+  <th>
+   <span class="datagrid-header-title">Geographic Data Sample</span>
+   <div class="datagrid-header-left">
+ 
+   </div>
+   <div class="datagrid-header-right">
+	<div class="input-append search">
+	 <input type="text" class="input-medium" placeholder="Search"><button class="btn"><i class="icon-search"></i></button>
+	</div>
+   </div>
+  </th>
+ </tr>
+ </thead>
+ 
+ <tfoot>
+ <tr>
+  <th>
+   <div class="datagrid-footer-left" style="display:none;">
+	<div class="grid-controls">
+	 <span><span class="grid-start"></span> - <span class="grid-end"></span> of <span class="grid-count"></span></span>
+	 <select class="grid-pagesize"><option>10</option><option>20</option><option>50</option><option>100</option></select>
+	 <span>Per Page</span>
+	</div>
+   </div>
+   <div class="datagrid-footer-right" style="display:none;">
+	<div class="grid-pager">
+	 <button class="btn grid-prevpage"><i class="icon-chevron-left"></i></button>
+	 <span>Page</span>
+	 <div class="input-append dropdown combobox">
+	  <input class="span1" type="text"><button class="btn" data-toggle="dropdown"><i class="caret"></i></button>
+	  <ul class="dropdown-menu"></ul>
+	 </div>
+	 <span>of <span class="grid-pages"></span></span>
+	 <button class="btn grid-nextpage"><i class="icon-chevron-right"></i></button>
+	</div>
+   </div>
+  </th>
+ </tr>
+ </tfoot>
+</table>
 
-<script id="tmplTodos" type="text/x-handlebars-template">
-  <div class="btn-group" style="margin-bottom: 12px; text-align: center;">
-    <a id="showUnCompleted" class="btn btn-info active"> Show uncompleted </a>
-    <a id="showAll" class="btn btn-info"> Show all </a>
-  </div>
-  
-  {{#each todos}}
-    <div class="row {{#if completed}}completed{{/if}} {{#if overdue}}overdue{{/if}}">
-      
-      <div class="span3">
-        {{#if completed}}
-        <a class="btn btn-danger" id="ucTask" idval="{{id}}" title="Uncomplete"><span class="icon-thumbs-down"></span></a>
-        {{else}}
-        <a class="btn btn-success" id="cTask" idval="{{id}}" title="Complete"><span class="icon-thumbs-up"></span></a>
-        {{/if}}
-        <a class="btn btn-success" id="upTask" idval="{{id}}" title="UP"><span class="icon-arrow-up"></span></a>
-        <a class="btn btn-success" id="downTask" idval="{{id}}" title="DOWN"><span class="icon-arrow-down"></span></a>
-      </div>
-      
-      <div class="span4 text">{{name}}</div>
-      <div class="span2 date">{{date}}</div>
-      <div class="span2" style="display: none;"><input class="date_input" id="dt_{{rval}}" idval="{{id}}"/></div>
-      <div class="span2">
-        <a class="btn btn-success" id="editTask" idval="{{id}}" title="Edit"><span class="icon-pencil"></span></a>
-        <a class="btn btn-danger" id="delTask" idval="{{id}}" title="Delete"><span class="icon-trash"></span></a>
-      </div>
-    </div>
-  {{/each}}
-  <div style="width: 100%; text-align: center;">
-    <a class="btn btn-warning" id="addTask"> <span class="icon-file"></span> Add new task </a>
-  </div>
 
-</script>
 
-<div id="todos"></div>
 <div id="dialog" class="modal hide fade"></div>
