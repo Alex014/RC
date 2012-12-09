@@ -7,12 +7,6 @@ $(document).ready(function() {
   $('#regform').bt_validate();
 
   //Custom check function
-  /*$.bt_validate.fn.custom_pass_eq = function(value) {
-    return ($('#pass').val() == $('#pass2').val());
-  }
-  //Err message on tooltip (if check function returns false)
-  $.bt_validate.text.custom_pass_eq = "The passwords are not equal";*/
-    
   $.bt_validate.method(
     'custom_pass_eq', 
     function(value) {

@@ -56,33 +56,53 @@ $.fn.bt_validate = function() {
     for(var i in validate_params) {
       var validate_param = validate_params[i].split(',');
       var fn_name = validate_param[0];
-      validate_param[0] = $(this).val();
-      //console.log(fn_name, typeof($.bt_validate.fn[fn_name]));
-      var fn_or_object = $.bt_validate.fn[fn_name]
+      
+      validate_param[0] = $(this).val().trim();
+      
+      var fn_or_object = $.bt_validate.fn[fn_name];
+      
       if(typeof(fn_or_object) == 'function')
+        //Validate by function
         var res = fn_or_object.apply($(this), validate_param);
       else
+        //Validate by object
         var res = fn_or_object.fn_validate.apply($(this), validate_param);
       
       if(typeof(res) != 'string') {
           if(!res) {
             var tl_text = $.bt_validate.text[fn_name];
+            
             for(var j = 1; j < validate_param.length; j++) {
               tl_text = tl_text.replace('%'+j, validate_param[j]);
             }
+            
             $(this).show_err_tooltip(tl_text);
+            
             field_result = false;
             $.bt_validate.result = false;
+            //After validate event
+            if($.bt_validate.after_validate != null)
+              $.bt_validate.after_validate.call($(this), fn_name, validate_param[0], validate_param.slice(1), false);
             break;
           }
       }
       else {
         field_result = false;
+        //After validate event
+        if($.bt_validate.after_validate != null)
+          $.bt_validate.after_validate.call($(this), fn_name, validate_param[0], validate_param.slice(1), false);
       }
     
     }
-    if(field_result)
+    
+    //If result is true
+    if(field_result) {
+      //After validate event
+      if($.bt_validate.after_validate != null)
+        $.bt_validate.after_validate.call($(this), fn_name, validate_param[0], validate_param.slice(1), true);
+      //Hiding tooltip
       $(this).tooltip('hide');
+    }
   });
   
   $(this).submit(function() {
